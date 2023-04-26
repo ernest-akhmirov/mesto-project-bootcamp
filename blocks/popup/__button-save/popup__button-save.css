@@ -6,8 +6,8 @@
   line-height: 22px;
   text-align: center;
   padding: 0;
-  margin: 48px 0 0px;
-  border: 0;
+  margin: 48px 0 0;
+  border: none;
   width: 358px;
   height: 50px;
   cursor: pointer;
@@ -19,7 +19,7 @@
 
 @media (max-width: 900px) {
   .popup__button-save {
-    margin: 45px auto 25px;
+    margin: 45px auto 0;
     width: 238px;
     height: 46px;
     font-size: 14px;

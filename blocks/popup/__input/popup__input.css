@@ -1,6 +1,6 @@
 .popup__input {
   margin: 0 auto 30px;
-  padding: 0 0 9px;
+  padding: 0 0 13px;
   width: 100%;
   font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
   font-style: normal;
@@ -8,9 +8,8 @@
   font-size: 14px;
   line-height: 17px;
   color: #000;
-  outline: 0;
-  border: 0;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .popup__input:nth-of-type(2) {
@@ -21,8 +20,3 @@
   color: #000;
 }
 
-@media (max-width: 900px) {
-  .popup__input {
-    width: 100%;
-  }
-}
