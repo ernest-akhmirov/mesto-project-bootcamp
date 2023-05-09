@@ -13,4 +13,3 @@
 * [Ссылка на проект](https://ernest-akhmirov.github.io/mesto-project-bootcamp/)
 
 Планы по доработке:
-Добавить JS сделать кнопки кликабельными.
