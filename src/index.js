@@ -1,4 +1,5 @@
 'use strict';
+import './pages/index.css';
 import { handleProfileFormSubmit, openPopup, closePopup }  from './components/modal.js';
 import { ProfileEditBtn, popupProfileForm, nameInput, jobInput, profileName, profileDescription, closeButtons, popupPlace, } from "./components/utils.js";
 import {  renderInitialCards, addPlace} from "./components/card.js";
