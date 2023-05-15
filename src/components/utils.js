@@ -16,4 +16,7 @@ const urlInput = document.querySelector('.popup__input_type_url');
 
 
 
+
+
+
 export {ProfileEditBtn, popupProfileForm, profileCloseButton, nameInput, jobInput, profileName, profileDescription, closeButtons, addBtn, popupPlace, closeBtnPlace, placeInput, urlInput};

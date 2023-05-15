@@ -1,26 +1,34 @@
 'use strict';
 
-
-
-function showInputError (formElement, inputElement, errorMessage) {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add('popup__input_type_error');
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__error_visible');
+  export const settings =   {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button-save',
+  inactiveButtonClass: 'popup__button-save_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
 };
 
-function hideInputError (formElement, inputElement) {
+
+function showInputError (formElement, inputElement, settings) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove('popup__input_type_error');
-  errorElement.classList.remove('popup__error_visible');
+  inputElement.classList.add(settings.inputErrorClass);
+  errorElement.textContent = inputElement.validationMessage;
+  errorElement.classList.add(settings.errorClass);
+};
+
+function hideInputError (formElement, inputElement, settings) {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.remove(settings.inputErrorClass);
+  errorElement.classList.remove(settings.errorClass);
   errorElement.textContent = '';
 };
 
-function checkInputValidity (formElement, inputElement) {
+function checkInputValidity (formElement, inputElement, settings) {
   if (!inputElement.validity.valid) {
-      showInputError(formElement, inputElement, inputElement.validationMessage);
+      showInputError(formElement, inputElement, settings);
   } else {
-      hideInputError(formElement, inputElement);
+      hideInputError(formElement, inputElement, settings);
   }
 };
 
@@ -30,35 +38,42 @@ function hasInvalidInput (inputList) {
   })
 };
 
-function toggleButtonState (inputList, buttonElement) {
+function toggleButtonState (inputList, buttonElement, settings) {
   if (hasInvalidInput(inputList)) {
-      buttonElement.classList.add('popup__button-save_inactive');
+      buttonElement.classList.add(settings.inactiveButtonClass);
       buttonElement.disabled = true;
   } else {
-      buttonElement.classList.remove('popup__button-save_inactive');
+      buttonElement.classList.remove(settings.inactiveButtonClass);
       buttonElement.disabled = false;
   }
 };
 
-function setEventListeners (formElement) {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-  const buttonElement = formElement.querySelector('.popup__button-save');
-  toggleButtonState(inputList, buttonElement);
+function setEventListeners (formElement, settings) {
+  const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
+  const buttonElement = formElement.querySelector(settings.submitButtonSelector);
+  toggleButtonState(inputList, buttonElement, settings);
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
-          checkInputValidity(formElement, inputElement);
-          toggleButtonState(inputList, buttonElement)
+          checkInputValidity(formElement, inputElement, settings);
+          toggleButtonState(inputList, buttonElement, settings)
       });
   });
 };
 
- export function enableValidation() {
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
+ export function enableValidation(settings) {
+  const formList = Array.from(document.querySelectorAll(settings.formSelector));
   formList.forEach((formElement) => {
     formElement.addEventListener('submit', function (evt) {
           evt.preventDefault();
       })
-      setEventListeners(formElement);
+      setEventListeners(formElement, settings);
   })
 }
+
+export function disableSubmitBtn(formElement, settings) {
+  const buttonElement = formElement.querySelector(settings.submitButtonSelector);
+  buttonElement.classList.add(settings.inactiveButtonClass);
+  buttonElement.disabled = true;
+};
+
 
