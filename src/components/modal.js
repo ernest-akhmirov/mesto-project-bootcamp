@@ -1,11 +1,41 @@
 'use strict';
-import { popupProfileForm, nameInput, jobInput, profileName, profileDescription } from './utils.js';
+import { popupProfileForm, nameInput, jobInput, profileName, profileDescription, avatar, popupAvatar, savebtnAvatar, savebtnProfile } from './utils.js';
+import { updateUserData, patchAvatar } from './api.js';
+
 //изменить данные в профиле
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  profileName.textContent = nameInput.value;
-  profileDescription.textContent = jobInput.value;
-  closePopup(popupProfileForm);
+  nowSaving(savebtnProfile, "Сохранение...");
+  updateUserData(nameInput.value, jobInput.value)
+  .then(() => {
+    profileName.textContent = nameInput.value;
+    profileDescription.textContent = jobInput.value;
+    closePopup(popupProfileForm);
+  })
+  .finally(() => {
+  nowSaving(savebtnProfile, "Сохранить");
+  });
+}
+const avatarForm = document.newAvatar;
+const avatarInput = avatarForm.elements.avatarLink;
+
+
+function handleAvatarFormSubmit(evt) {
+  evt.preventDefault();
+  nowSaving(savebtnAvatar, "Сохранение...");
+  patchAvatar(avatarInput.value)
+  .then(() => {
+    avatar.src = avatarInput.value;
+    closePopup(popupAvatar);
+    evt.target.reset();
+  })
+  .finally(() => {
+    nowSaving(savebtnAvatar, "Сохранить");
+  });
+}
+//
+export function nowSaving(submitBtn, text) {
+  submitBtn.textContent = text;
 }
 
 // //откр.попап
@@ -28,4 +58,4 @@ function closeByEscape(evt) {
   }
 }
 
-export {handleProfileFormSubmit, openPopup, closePopup, closeByEscape};
+export {handleProfileFormSubmit, handleAvatarFormSubmit, openPopup, closePopup, closeByEscape};
