@@ -1,41 +1,16 @@
 'use strict';
-import { addBtn, popupPlace, placeInput, urlInput, saveBtnPlace } from "./utils.js";
-import { openPopup, closePopup, nowSaving} from './modal.js';
+import { addBtn, popupPlace, placeInput, urlInput, saveBtnPlace } from "./constants.js";
+import { openPopup, closePopup} from './modal.js';
 import { disableSubmitBtn, settings } from './validate.js';
 import { addNewCard, removeCard, putLike, deleteLike, checkResponse } from './api.js';
 import { userId } from '../index.js';
-
-// //загрузка карточек
-//  const initialCards = [
-//   {
-//     name: 'Архыз',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-//   },
-//   {
-//     name: 'Челябинская область',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-//   },
-//   {
-//     name: 'Иваново',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-//   },
-//   {
-//     name: 'Камчатка',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-//   },
-//   {
-//     name: 'Холмогорский район',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-//   },
-//   {
-//     name: 'Байкал',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-//   }
-// ]; 
+import { setNowSaving } from './utils.js';
 
 const placesContainer = document.querySelector('.elements');
 const placeTemplate = document.querySelector('#templateCard').content;
-
+const popupZoomImg = document.querySelector('.popup_zoomImg');
+const image = document.querySelector('.popup__image');
+const imageText = document.querySelector('.popup__imageText');
 
 
 function getCard(item){
@@ -44,9 +19,6 @@ function getCard(item){
   const deleteBtn = cardElement.querySelector('.element__delete-button');
   const likeBtn = cardElement.querySelector('.element__like-button');
   const placeImage = cardElement.querySelector('.element__photo');//
-  const popupZoomImg = document.querySelector('.popup_zoomImg');
-  const image = document.querySelector('.popup__image');
-  const imageText = document.querySelector('.popup__imageText');
   const likeCounter = cardElement.querySelector('.element__like-counter');
   placeImage.src = item.link;
   placeImage.alt = item.name;
@@ -62,11 +34,12 @@ function getCard(item){
   //удаление карточки
   function killcard (evt) {
     const deleteBtn = evt.target;
-    const card = deleteBtn.parentElement;
+    const card = deleteBtn.closest('.element');
     removeCard(card.id)
       .then(() => {
           card.remove();
       })
+      .catch(console.error);
     };
 
   deleteBtn.addEventListener('click', killcard);
@@ -81,9 +54,7 @@ function getCard(item){
           likeCounter.textContent = res.likes.length;
           likeBtn.classList.add('element__like-button_active');
         })
-        .catch((err) => {
-          checkResponse(err);
-        });
+        .catch(console.error);
     }
     else {
       deleteLike(item._id)
@@ -91,9 +62,7 @@ function getCard(item){
           likeBtn.classList.remove('element__like-button_active');
           likeCounter.textContent = res.likes.length;
         })
-        .catch((err) => {
-          checkResponse(err);
-        });
+        .catch(console.error);
     }
   };
   likeBtn.addEventListener('click', toggleLikeButton);
@@ -129,20 +98,19 @@ function renderInitialCards () {
  // добавления места
 function addCard (evt) {
   evt.preventDefault();
-  nowSaving(saveBtnPlace, "Сохранение...");
+  setNowSaving(saveBtnPlace, "Сохранение...");
   addNewCard(placeInput.value, urlInput.value)
   .then((card) => {
      console.log(card)
      createCard(card);
      closePopup(popupPlace);
      evt.target.reset();
-     disableSubmitBtn(popupPlace, settings);
+     disableSubmitBtn(saveBtnPlace, settings);
   })
+  .catch(console.error)
   .finally(() => {
-    nowSaving(saveBtnPlace, "Сохранить");
+    setNowSaving(saveBtnPlace, "Сохранить");
     });
-  evt.target.reset();
-  disableSubmitBtn(popupPlace, settings);
 }
   addBtn.addEventListener('click', () => {
   openPopup(popupPlace);

@@ -15,14 +15,14 @@ function showInputError (formElement, inputElement, settings) {
   inputElement.classList.add(settings.inputErrorClass);
   errorElement.textContent = inputElement.validationMessage;
   errorElement.classList.add(settings.errorClass);
-};
+}
 
 function hideInputError (formElement, inputElement, settings) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.remove(settings.inputErrorClass);
   errorElement.classList.remove(settings.errorClass);
   errorElement.textContent = '';
-};
+}
 
 function checkInputValidity (formElement, inputElement, settings) {
   if (!inputElement.validity.valid) {
@@ -30,23 +30,22 @@ function checkInputValidity (formElement, inputElement, settings) {
   } else {
       hideInputError(formElement, inputElement, settings);
   }
-};
+}
 
 function hasInvalidInput (inputList) {
   return inputList.some((inputElement) =>{
       return !inputElement.validity.valid
   })
-};
+}
 
 function toggleButtonState (inputList, buttonElement, settings) {
   if (hasInvalidInput(inputList)) {
-      buttonElement.classList.add(settings.inactiveButtonClass);
-      buttonElement.disabled = true;
+    disableSubmitBtn(buttonElement, settings)
   } else {
       buttonElement.classList.remove(settings.inactiveButtonClass);
       buttonElement.disabled = false;
   }
-};
+}
 
 function setEventListeners (formElement, settings) {
   const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
@@ -58,7 +57,7 @@ function setEventListeners (formElement, settings) {
           toggleButtonState(inputList, buttonElement, settings)
       });
   });
-};
+}
 
  export function enableValidation(settings) {
   const formList = Array.from(document.querySelectorAll(settings.formSelector));
@@ -70,10 +69,9 @@ function setEventListeners (formElement, settings) {
   })
 }
 
-export function disableSubmitBtn(formElement, settings) {
-  const buttonElement = formElement.querySelector(settings.submitButtonSelector);
+export function disableSubmitBtn(buttonElement, settings) {
   buttonElement.classList.add(settings.inactiveButtonClass);
   buttonElement.disabled = true;
-};
+}
 
 

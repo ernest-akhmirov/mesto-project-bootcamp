@@ -1,19 +1,23 @@
 'use strict';
-import { popupProfileForm, nameInput, jobInput, profileName, profileDescription, avatar, popupAvatar, savebtnAvatar, savebtnProfile } from './utils.js';
+import { popupProfileForm, nameInput, jobInput, profileName, profileDescription, avatar, popupAvatar, savebtnAvatar, savebtnProfile } from './constants.js';
 import { updateUserData, patchAvatar } from './api.js';
+import { disableSubmitBtn, settings } from './validate.js';
+import { setNowSaving } from './utils.js';
 
 //изменить данные в профиле
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  nowSaving(savebtnProfile, "Сохранение...");
+  setNowSaving(savebtnProfile, "Сохранение...");
   updateUserData(nameInput.value, jobInput.value)
   .then(() => {
     profileName.textContent = nameInput.value;
     profileDescription.textContent = jobInput.value;
     closePopup(popupProfileForm);
+    disableSubmitBtn(savebtnProfile, settings);
   })
+  .catch(console.error)
   .finally(() => {
-  nowSaving(savebtnProfile, "Сохранить");
+    setNowSaving(savebtnProfile, "Сохранить");
   });
 }
 const avatarForm = document.newAvatar;
@@ -22,20 +26,18 @@ const avatarInput = avatarForm.elements.avatarLink;
 
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
-  nowSaving(savebtnAvatar, "Сохранение...");
+  setNowSaving(savebtnAvatar, "Сохранение...");
   patchAvatar(avatarInput.value)
   .then(() => {
     avatar.src = avatarInput.value;
     closePopup(popupAvatar);
     evt.target.reset();
+    disableSubmitBtn(savebtnAvatar, settings);
   })
+  .catch(console.error)
   .finally(() => {
-    nowSaving(savebtnAvatar, "Сохранить");
+    setNowSaving(savebtnAvatar, "Сохранить");
   });
-}
-//
-export function nowSaving(submitBtn, text) {
-  submitBtn.textContent = text;
 }
 
 // //откр.попап

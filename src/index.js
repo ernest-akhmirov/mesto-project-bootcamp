@@ -1,7 +1,7 @@
 'use strict';
 import './pages/index.css';
 import { handleProfileFormSubmit, openPopup, closePopup, handleAvatarFormSubmit }  from './components/modal.js';
-import { ProfileEditBtn, popupProfileForm, nameInput, jobInput, profileName, profileDescription, popupPlace, avatar , avatarEditbtn, popupAvatar} from "./components/utils.js";
+import { profileEditBtn, popupProfileForm, nameInput, jobInput, profileName, profileDescription, popupPlace, avatar , avatarEditbtn, popupAvatar} from "./components/constants.js";
 import { addCard,createCard} from "./components/card.js";
 import { enableValidation, settings } from './components/validate.js';
 import { getInitialCards, getUser, checkResponse } from './components/api';
@@ -14,7 +14,7 @@ avatarEditbtn.addEventListener('click', () => {
 });
 //
 // Cлушатель откр автара по кнопке
-ProfileEditBtn.addEventListener('click', () => {
+profileEditBtn.addEventListener('click', () => {
   nameInput.value = profileName.textContent;
   jobInput.value = profileDescription.textContent;
   openPopup(popupProfileForm)
@@ -42,7 +42,6 @@ popupProfileForm.addEventListener('submit', handleProfileFormSubmit);
 //
 popupAvatar.addEventListener('submit', handleAvatarFormSubmit);
 //
-// renderInitialCards(); больше не нужно
 //
 popupPlace.addEventListener('submit', addCard);
 //
@@ -62,7 +61,7 @@ Promise.all([getInitialCards(), getUser()])
   const cardList = Array.from(cards);
   cardList.forEach(createCard);
 })
-.catch(checkResponse);
+.catch(console.error)
 
 
 
